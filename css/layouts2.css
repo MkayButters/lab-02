@@ -1,0 +1,13 @@
+.gallery > section {
+    width: 200px;
+}
+
+img {
+    width: 200px;
+}
+.gallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
