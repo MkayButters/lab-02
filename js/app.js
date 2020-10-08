@@ -1,5 +1,5 @@
 'use strict';
-
+let allcritters = [];
 
 function HornedCritter(critter) {
     this.image = critter.image_url;
@@ -8,13 +8,12 @@ function HornedCritter(critter) {
     this.tag = critter.keyword;
     this.horns = critter.horns;
     this.class = this.class;
+    allcritters.push(this)
 }
 
 HornedCritter.prototype.render = function () {
-      let template = $("#gallery-template").html();
-    console.log(template)
+    let template = $("#gallery-template").html();
     let html = Mustache.render(template, this);
-    console.log(html);
     return html;
 }
 
@@ -40,21 +39,45 @@ HornedCritter.readJSON = () => {
     $.ajax('data/page-1.json', ajaxSettings)
         .then(data => {
             data.forEach(item => {
-                let critter = new HornedCritter(item);
-                critter.makeClass();
-                $('main').append(critter.render());
-                $('select').append(`<option value=${critter.class}>${critter.title}</option>`);
-            })
-        })
+                new HornedCritter(item);
+            });
+            let bucket = []  //before forEach or else it comes empty everytime
+                allcritters.sort((a, b) => a.title > b.title ? 1 : -1);
+                allcritters.forEach(critter =>{
+                    critter.makeClass();
+                    $('.gallery').append(critter.render())
+                    if (!bucket.includes(critter.tag)) {//if ive seen it before, i dont run any code; doesnt display duplicates
+                        bucket.push(critter.tag)
+                        $('#filter').append(`<option value=${critter.tag}>${critter.tag}</option>`)
+                    }
+
+            });
+        });
 }
 
+//jQuery "this" is
+$('#filter').on('change', function () {
+    console.log(this.value)
+    let val = this.value
+    $('section').hide()
+    $(`.${val}`).show()
+});
 
-$('select').on('change', function () {
-    if ($('select option:selected').text() === 'View All') {
-        $('section').show();
-    } else {
-        $('section').hide();
-        $(`.${$('select option:selected').val()}`).show();
+$('#sort').on('change', function () {
+    if ($(this).val() === 'title') {
+        $('.gallery').empty();
+        allcritters.sort((a, b) => a.title > b.title ? 1 : -1);
+        allcritters.forEach(critter => {
+            $('.gallery').append(critter.render());
+
+        })
+    }
+    else {
+        $('.gallery').empty();
+        allcritters.sort((a, b) => a.horns > b.horns ? 1 : -1)
+        allcritters.forEach(critter => {
+            $('.gallery').append(critter.render());
+        })
     }
 })
 

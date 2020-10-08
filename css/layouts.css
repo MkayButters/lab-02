@@ -4,12 +4,15 @@ h1 {
     font-family: 'Permanent Marker', cursive;
 }
 
-section {
-    height: 300px;
-    margin: 30px;
-    float: left;
+.gallery > section {
+    width: 200px;
 }
-
+.gallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 img {
     height: 150px;
     max-width: 250px;

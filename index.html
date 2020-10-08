@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script id="gallery-template" type="text/x-tmpl-mustache">
-        <section id="class">
+        <section class="{{ tag }}">
         <h2>{{ title }}</h2>
         <img src="{{ image }}">
         <p>{{ desc }}</p>
@@ -19,10 +19,15 @@
         <h1>Horns Photo Gallery</h1>
     </header>
     <main>
-        <div id="filter">
-            <select>
+        <select id="sort">
+            <option value="title">Title</option>
+            <option value="horns">Horns</option>
+        </select>
+        <div>
+            <select id="filter">
                 <option value="select">View All</option>
             </select>
+            <div class="gallery"> </div>
         </div>
         <div>
             <section class="gallery-temp">

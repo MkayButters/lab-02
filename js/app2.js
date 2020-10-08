@@ -30,34 +30,37 @@ HornedCritter.prototype.makeClass = function () {
     this.class = newTitle;
 }
 
-HornedCritter.readJSON2 = () => {
-    const ajaxSettings2 = {
+HornedCritter.readJSON = () => {
+    const ajaxSettings = {
         method: 'get',
         dataType: 'json',
     }
-    $.ajax('data/page-2.json', ajaxSettings2)
+
+    $.ajax('data/page-2.json', ajaxSettings)
         .then(data => {
             data.forEach(item => {
-                let critter = new HornedCritter(item);
+                new HornedCritter(item);
             });
-            allcritters.sort((a, b) => a.title > b.title ? 1 : -1);
-            allcritters.forEach(critter => {
-                critter.makeClass();
-                $('.gallery').append(critter.render());
-                $('#filter').append(`<option value=${critter.class}>${critter.title}</option>`);
-            })
+            let bucket = []  //before forEach or else it comes empty everytime
+                allcritters.sort((a, b) => a.title > b.title ? 1 : -1);
+                allcritters.forEach(critter =>{
+                    critter.makeClass();
+                    $('.gallery').append(critter.render())
+                    if (!bucket.includes(critter.tag)) {//if ive seen it before, i dont run any code; doesnt display duplicates
+                        bucket.push(critter.tag)
+                        $('#filter').append(`<option value=${critter.tag}>${critter.tag}</option>`)
+                    }
+
+            });
         });
 }
 
 $('#filter').on('change', function () {
-    if ($('select option:selected').text() === 'View All') {
-        $('section').show();
-    }
-    else {
-        $('section').hide();
-        $(`.${$(this).val()}`).show();
-    }
-})
+    console.log(this.value)
+    let val = this.value
+    $('section').hide()
+    $(`.${val}`).show()
+});
 
 $('#sort').on('change', function () {
     if ($(this).val() === 'title') {
@@ -78,4 +81,4 @@ $('#sort').on('change', function () {
 })
 
 
-$(() => HornedCritter.readJSON2());
+$(() => HornedCritter.readJSON());
