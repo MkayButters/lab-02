@@ -4,20 +4,22 @@ h1 {
     font-family: 'Permanent Marker', cursive;
 }
 
-.gallery > section {
-    width: 200px;
+.gallery{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
-.gallery {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
+
 img {
     height: 150px;
     max-width: 250px;
 }
 
+h2 {
+    width:200px;
+}
 p {
     max-width: 250px;
 }
